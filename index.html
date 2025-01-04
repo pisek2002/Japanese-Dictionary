@@ -101,43 +101,55 @@
     </div>
 
     <script src="dictionary-data.js"></script>
-    <script>
+   <script>
         const searchInput = document.getElementById('searchInput');
         const dictionaryTable = document.getElementById('dictionaryTable');
-
+    
+        // เตรียมข้อมูลล่วงหน้าเพื่อลดภาระในขณะค้นหา
+        const preparedDictionary = dictionary.map(word => ({
+            ...word,
+            thaiLower: word.thai.toLowerCase(),
+            kanjiLower: word.kanji.toLowerCase(),
+            hiraganaLower: word.hiragana.toLowerCase(),
+            romajiLower: word.romaji.toLowerCase(),
+        }));
+    
+        // ฟังก์ชันแสดงคำศัพท์
         function displayWords(words) {
-            dictionaryTable.innerHTML = '';
-            words.forEach(word => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+            dictionaryTable.innerHTML = words.map(word => `
+                <tr>
                     <td>${word.thai}</td>
                     <td>${word.kanji}</td>
                     <td>${word.hiragana}</td>
                     <td>${word.romaji}</td>
-                `;
-                dictionaryTable.appendChild(row);
-            });
+                </tr>
+            `).join('');
         }
-
+    
+        // ฟังก์ชันค้นหา
         function searchWords(query) {
             const lowerCaseQuery = query.toLowerCase();
-            return dictionary.filter(word => {
-                return (
-                    word.thai.includes(query) ||
-                    word.kanji.includes(query) ||
-                    word.hiragana.includes(query) ||
-                    word.romaji.toLowerCase().includes(lowerCaseQuery)
-                );
-            });
+            return preparedDictionary.filter(word =>
+                word.thaiLower.includes(lowerCaseQuery) ||
+                word.kanjiLower.includes(lowerCaseQuery) ||
+                word.hiraganaLower.includes(lowerCaseQuery) ||
+                word.romajiLower.includes(lowerCaseQuery)
+            );
         }
-
+    
+        // เพิ่ม debouncing เพื่อปรับปรุงประสิทธิภาพ
+        let debounceTimeout;
         searchInput.addEventListener('input', () => {
-            const query = searchInput.value;
-            const results = searchWords(query);
-            displayWords(results);
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                const query = searchInput.value;
+                const results = searchWords(query);
+                displayWords(results);
+            }, 300); // หน่วงเวลา 300 มิลลิวินาที
         });
-
-        displayWords(dictionary);
+    
+        // แสดงคำศัพท์ทั้งหมดเมื่อโหลดหน้า
+        displayWords(preparedDictionary);
     </script>
 </body>
 </html>
