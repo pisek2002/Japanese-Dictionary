@@ -52,12 +52,12 @@
             padding: 15px;
             font-size: 1rem;
             text-align: center;
-            border: 1px solid #0a66c3;
+            border: 1px solid #dee2e6;
             word-wrap: break-word; /* ทำให้ข้อความตัดบรรทัดถ้ายาวเกิน */
         }
         th {
             background-color: #0d47a1; /* สีน้ำเงินเข้ม */
-            color: #35077e; /* สีข้อความขาว */
+            color: #ffffff; /* สีข้อความขาว */
             font-size: 1.1rem;
         }
         td:first-child {
@@ -87,7 +87,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ภาษาไทย</th>
+                        <th>คำในภาษาไทย</th>
                         <th>คันจิ</th>
                         <th>ฮิระงะนะ</th>
                         <th>โรมันจิ</th>
@@ -101,7 +101,7 @@
     </div>
 
     <script src="dictionary-data.js"></script>
-   <script>
+    <script>
         const searchInput = document.getElementById('searchInput');
         const dictionaryTable = document.getElementById('dictionaryTable');
     
@@ -151,5 +151,6 @@
         // แสดงคำศัพท์ทั้งหมดเมื่อโหลดหน้า
         displayWords(preparedDictionary);
     </script>
+    
 </body>
 </html>
